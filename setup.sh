@@ -18,7 +18,7 @@ cp -r app/html/* /var/www/html/
 cp flask_app /etc/nginx/sites-available/
 ln -s /etc/nginx/sites-available/flask_app /etc/nginx/sites-enabled/
 rm -fv /etc/nginx/sites-enabled/default
-service nginx start
+service nginx restart
 
 #launching the broken backend...
 python3 ./app/broken_backend.py &
