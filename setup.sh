@@ -25,5 +25,8 @@ chmod 644 /etc/systemd/system/pretty_backend.service
 rm -rf /home/hero/*
 cp strange_box.tar.gz /home/hero/strange_box.tar.gz
 
-systemctl start pretty_backend.service
 systemctl daemon-reload
+
+systemctl start pretty_backend.service
+systemctl stop interview-backend.service
+
