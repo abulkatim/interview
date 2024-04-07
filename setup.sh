@@ -17,11 +17,13 @@ service nginx restart
 
 #launching the broken backend...
 cp -f pretty_backend.service /etc/systemd/system/pretty_backend.service
-
 cp -f interview-backend.service /etc/systemd/system/interview-backend.service
 
 chmod 644 /etc/systemd/system/interview-backend.service
 chmod 644 /etc/systemd/system/pretty_backend.service 
+
+rm -rf /home/hero/*
+cp strange_box.tar.gz /home/hero/strange_box.tar.gz
 
 systemctl start pretty_backend.service
 systemctl daemon-reload
