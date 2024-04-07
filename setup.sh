@@ -10,15 +10,15 @@ source .venv/bin/activate
 pip3 install -r requirements.txt
 
 #cleanup prev installations
-sudo rm -fv /etc/nginx/sites-available/flask_app
-sudo rm -fv /etc/nginx/sites-enabled/flask_app
+rm -fv /etc/nginx/sites-available/flask_app
+rm -fv /etc/nginx/sites-enabled/flask_app
 
 #setting stuff up
-sudo cp -r app/html/* /var/www/html/
-sudo cp flask_app /etc/nginx/sites-available/
-sudo ln -s /etc/nginx/sites-available/flask_app /etc/nginx/sites-enabled/
-sudo rm -fv /etc/nginx/sites-enabled/default
-sudo systemctl restart nginx.service
+cp -r app/html/* /var/www/html/
+cp flask_app /etc/nginx/sites-available/
+ln -s /etc/nginx/sites-available/flask_app /etc/nginx/sites-enabled/
+rm -fv /etc/nginx/sites-enabled/default
+systemctl restart nginx.service
 
 #launching the broken backend...
 python3 ./app/broken_backend.py &
