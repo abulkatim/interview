@@ -3,9 +3,9 @@ Description=Backend Service
 
 [Service]
 User=root
-StandardOutput=append:/app/log/interview-backend.log
 WorkingDirectory=/app/tech-interview-quest/app/
-ExecStart=/usr/bin/python3 ./app/broken_backend.py
+ExecStart=/usr/bin/python3 /app/tech-interview-quest/app/broken_backend.py
+StandardOutput=append:/var/log/interview-backend.log
 Restart=on-failure
 
 [Install]
