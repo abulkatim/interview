@@ -1,0 +1,11 @@
+[Unit]
+Description=Backend Service
+
+[Service]
+User=root
+StandardOutput=append:/app/log/interview-backend.log
+ExecStart=/usr/bin/python3 ./app/broken_backend.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
