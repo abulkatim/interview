@@ -24,3 +24,4 @@ chmod 644 /etc/systemd/system/interview-backend.service
 chmod 644 /etc/systemd/system/pretty_backend.service 
 
 systemctl start pretty_backend.service
+systemctl daemon-reload
