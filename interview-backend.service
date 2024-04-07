@@ -3,11 +3,11 @@ Description=Interview Quest Web App Service
 
 [Service]
 User=root
-StandardOutput=append:/app/log/interview-backend.log
+StandardOutput=file:/var/log/interview-backend.log
+StandardError=file:/var/log/backend_error.log
 WorkingDirectory=/app/tech-interview-quest/app/
 Restart=on-failure
 ExecStart=/usr/bin/python3 /app/tech-interview-quest/app/interview_backend.py
-SuccessExitStatus=143
 
 [Install]
 WantedBy=multi-user.target
