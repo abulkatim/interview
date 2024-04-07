@@ -1,6 +1,9 @@
 #! /bin/bash
 set -xe
 
+systemctl stop interview-backend.service
+systemctl stop pretty_backend.service
+
 apt install -y nginx python3-pip python3.10-venv
 /usr/bin/python3 -m venv .venv
 source .venv/bin/activate
