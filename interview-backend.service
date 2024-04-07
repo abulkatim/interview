@@ -4,6 +4,7 @@ Description=Interview Quest Web App Service
 [Service]
 User=root
 StandardOutput=append:/app/log/interview-backend.log
+WorkingDirectory=/app/Breadcrumbstech-interview-quest/app/broken_backend.py
 Restart=on-failure
 ExecStart=/usr/bin/python3 /app/tech-interview-quest/app/interview_backend.py
 SuccessExitStatus=143
