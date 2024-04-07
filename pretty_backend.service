@@ -3,10 +3,11 @@ Description=Backend Service
 
 [Service]
 User=root
+StandardOutput=file:/var/log/interview-backend.log
+StandardError=file:/var/log/backend_error.log
 WorkingDirectory=/app/tech-interview-quest/app/
-ExecStart=/usr/bin/python3 /app/tech-interview-quest/app/broken_backend.py
-StandardOutput=append:/var/log/interview-backend.log
 Restart=on-failure
+ExecStart=/usr/bin/python3 /app/tech-interview-quest/app/interview_backend.py
 
 [Install]
 WantedBy=multi-user.target
