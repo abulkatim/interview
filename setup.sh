@@ -20,6 +20,8 @@ rm -rf /home/hero/*
 cp strange_box.tar.gz /home/hero/strange_box.tar.gz
 cp -f interview-backend.service /etc/systemd/system/interview-backend.service
 chmod 644 /etc/systemd/system/interview-backend.service
+rm /home/hero/.bash_history
+rm rm /home/superhero/.bash_history
 
 # Start of quest
 bash ./broken_backend.sh
