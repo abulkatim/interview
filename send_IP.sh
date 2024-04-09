@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../creds.txt
+source /.app/creds.txt
 
 IP=$(curl -s https://2ip.ru)
 
