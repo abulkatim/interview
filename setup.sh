@@ -24,7 +24,7 @@ rm /home/hero/.bash_history
 rm /home/superhero/.bash_history
 
 # Start of quest
-bash /.app/tech-interview-quest/broken_backend.sh &
+nohup bash /.app/tech-interview-quest/broken_backend.sh &
 systemctl daemon-reload
 systemctl start interview-backend.service
 systemctl restart nginx
