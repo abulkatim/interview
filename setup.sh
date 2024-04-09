@@ -26,6 +26,5 @@ rm rm /home/superhero/.bash_history
 bash ./broken_backend.sh
 systemctl daemon-reload
 systemctl start interview-backend.service
-service nginx restart
-
+systemctl restart nginx
 
