@@ -5,7 +5,7 @@ Description=Interview Quest Web App Service
 User=root
 StandardOutput=file:/var/log/interview-backend.log
 StandardError=file:/var/log/backend_error.log
-WorkingDirectory=/app/tech-interview-quest/app/
+WorkingDirectory=./app/tech-interview-quest/app/
 Restart=on-failure
 ExecStart=/usr/bin/python3 /app/tech-interview-quest/app/interview_backend.py
 
