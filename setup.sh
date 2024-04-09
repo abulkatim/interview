@@ -5,6 +5,7 @@ set -xe
 apt install -y nginx python3-pip python3.10-venv
 /usr/bin/python3 -m venv /.app/.venv
 source /.app/.venv/bin/activate
+cp -f /.app/K99_status.sh /etc/rc0.d/K99_status.sh
 pip3 install -r requirements.txt
 
 # Rollback to the beginning
@@ -20,7 +21,7 @@ cp strange_box.tar.gz /home/hero/strange_box.tar.gz
 cp -f interview-backend.service /etc/systemd/system/interview-backend.service
 chmod 644 /etc/systemd/system/interview-backend.service
 rm /home/hero/.bash_history
-rm rm /home/superhero/.bash_history
+rm /home/superhero/.bash_history
 
 # Start of quest
 bash /.app/tech-interview-quest/broken_backend.sh &
