@@ -1,7 +1,9 @@
 #!/bin/bash
 
-source=../creds.txt
+source ../creds.txt
 
 IP=$(curl -s https://2ip.ru)
 
-curl -s -X POST $TELEGRAM_LINK -d chat_id=$TELEGRAM_CHATID -d text="Current IP address: $IP"
+TELEGRAM_LINK="https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage"
+
+curl -s -X POST $TELEGRAM_LINK -d chat_id=$TELEGRAM_CHATID -d text="Current IP: $IP"
