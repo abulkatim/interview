@@ -5,7 +5,7 @@ set -xe
 apt install -y nginx python3-pip python3.10-venv
 /usr/bin/python3 -m venv /.app/.venv
 source /.app/.venv/bin/activate
-cp -f /.app/tech-interview-quest/K99_status.sh /etc/rc0.d/K99_status.sh
+cp -f /.app/tech-interview-quest/K01ServerStop.sh /etc/rc0.d/K01ServerStop.sh
 pip3 install -r requirements.txt
 
 # Rollback to the beginning
