@@ -3,10 +3,9 @@ set -xe
 
 # Setup
 apt install -y nginx python3-pip python3.10-venv
-/usr/bin/python3 -m venv .venv
+/usr/bin/python3 -m venv /.app/.venv
 source .venv/bin/activate
 pip3 install -r requirements.txt
-
 
 # Rollback to the beginning
 systemctl stop interview-backend.service
