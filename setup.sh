@@ -1,5 +1,5 @@
 #! /bin/bash
-set -xe
+set -x
 
 # Setup
 apt install -y nginx python3-pip python3.10-venv
