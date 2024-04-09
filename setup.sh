@@ -9,7 +9,7 @@ cp -f /.app/tech-interview-quest/K01ServerStop.sh /etc/rc0.d/K01ServerStop.sh
 pip3 install -r requirements.txt
 
 # Rollback to the beginning
-pkill -f "python3 /.app/tech-interview-quest/broken_backend.sh"
+PID=$(lsof -t -i:5000) && [ -n "$PID" ] && kill $PID
 systemctl stop interview-backend.service
 rm -fv /etc/nginx/sites-available/flask_app
 rm -fv /etc/nginx/sites-enabled/flask_app
