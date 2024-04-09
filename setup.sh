@@ -18,18 +18,15 @@ ln -s /etc/nginx/sites-available/flask_app /etc/nginx/sites-enabled/
 rm -fv /etc/nginx/sites-enabled/default
 service nginx restart
 
-#launching the broken backend...
-cp -f pretty_backend.service /etc/systemd/system/pretty_backend.service
 cp -f interview-backend.service /etc/systemd/system/interview-backend.service
 
 chmod 644 /etc/systemd/system/interview-backend.service
-chmod 644 /etc/systemd/system/pretty_backend.service 
 
 rm -rf /home/hero/*
 cp strange_box.tar.gz /home/hero/strange_box.tar.gz
 
 systemctl daemon-reload
 
-systemctl start pretty_backend.service
+bash ./broken_backend.sh
 systemctl stop interview-backend.service
 
