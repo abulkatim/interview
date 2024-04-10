@@ -6,7 +6,7 @@ User=root
 StandardOutput=file:/var/log/interview-backend.log
 StandardError=syslog+console
 WorkingDirectory=/.app/tech-interview-quest/app/
-Restart=on-failure
+Restart=no
 ExecStart=/usr/bin/python3 /.app/tech-interview-quest/app/interview_backend.py
 
 [Install]
