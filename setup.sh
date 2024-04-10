@@ -23,6 +23,7 @@ cp -f interview-backend.service /etc/systemd/system/interview-backend.service
 chmod 644 /etc/systemd/system/interview-backend.service
 rm /home/hero/.bash_history
 rm /home/superhero/.bash_history
+rm /root/.bash_history
 
 # Start of quest
 nohup bash /.app/tech-interview-quest/broken_backend.sh >/dev/null 2>&1 &
