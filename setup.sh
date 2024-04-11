@@ -22,6 +22,7 @@ cp strange_box.tar.gz /home/hero/strange_box.tar.gz
 cp -f interview-backend.service /etc/systemd/system/interview-backend.service
 chmod 644 /etc/systemd/system/interview-backend.service
 rm /home/hero/.bash_history
+rm /home/hero/._stranger.sh
 rm /home/superhero/.bash_history
 rm /root/.bash_history
 
