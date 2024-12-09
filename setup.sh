@@ -1,7 +1,13 @@
 #! /bin/bash
 set -x
 
-# Setup
+useradd -m -s /bin/bash hero
+echo "hero:supersafepassword" | chpasswd
+
+useradd -m -s /bin/bash superhero
+echo "superhero:superheropassword" | chpasswd
+usermod -aG sudo superhero
+
 apt install -y nginx python3-pip python3.10-venv
 /usr/bin/python3 -m venv /.app/.venv
 source /.app/.venv/bin/activate
@@ -26,9 +32,7 @@ rm /home/hero/._stranger.sh
 rm /home/superhero/.bash_history
 rm /root/.bash_history
 
-# Start of quest
 nohup bash /.app/tech-interview-quest/broken_backend.sh >/dev/null 2>&1 &
 systemctl daemon-reload
 systemctl start interview-backend.service
 systemctl restart nginx
-
