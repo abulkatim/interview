@@ -8,7 +8,7 @@ useradd -m -s /bin/bash superhero
 echo "superhero:superheropassword" | chpasswd
 usermod -aG sudo superhero
 
-apt install -y nginx python3-pip python3.10-venv
+apt install -y nginx python3-pip python3.10-venv cowsay
 /usr/bin/python3 -m venv /.app/.venv
 source /.app/.venv/bin/activate
 cp -f /.app/tech-interview-quest/K01ServerStop.sh /etc/rc0.d/K01ServerStop.sh
