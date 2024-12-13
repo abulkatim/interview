@@ -13,6 +13,7 @@ apt install -y nginx python3-pip python3.10-venv
 source /.app/.venv/bin/activate
 cp -f /.app/tech-interview-quest/K01ServerStop.sh /etc/rc0.d/K01ServerStop.sh
 pip3 install -r requirements.txt
+pip3 install flask
 
 # Rollback to the beginning
 PID=$(lsof -t -i:5000) && [ -n "$PID" ] && kill $PID
