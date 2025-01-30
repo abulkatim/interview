@@ -1,0 +1,162 @@
+---
+- name: Setup server for interview
+  hosts: all
+  become: yes  
+  tasks:
+
+    - name: 1. Git installation
+      apt:
+        name: git
+        state: present
+        update_cache: yes
+
+    - name: 2. Create hero user
+      user:
+        name: hero
+        shell: /bin/bash
+        create_home: yes
+
+    - name: 3. Create superhero user
+      user:
+        name: superhero
+        shell: /bin/bash
+        create_home: yes
+
+    - name: 4. Set password for hero
+      user:
+        name: hero
+        password: "{{ 'supersafepassword' | password_hash('sha512') }}"
+
+    - name: 5. Set password for superhero
+      user:
+        name: superhero
+        password: "{{ 'superheropassword' | password_hash('sha512') }}"
+
+    - name: 6. Add superhero to sudo group
+      user:
+        name: superhero
+        groups: sudo
+        append: yes
+
+    - name: 7. Install required packages
+      apt:
+        name:
+          - nginx
+          - python3-pip
+          - python3-venv  
+          - cowsay
+        state: present
+        update_cache: yes
+
+    - name: 8. Ensure /.app directory exists
+      file:
+        path: /.app
+        state: directory
+        mode: '0755'
+
+    - name: 9. Clone tech interview quest repository
+      git:
+        repo: https://github.com/abulkatim/tech-interview-quest.git
+        dest: /.app/interview
+        clone: yes
+        update: yes
+
+    - name: 10. Create virtual environment
+      command: /usr/bin/python3 -m venv /.app/.venv
+
+    - name: 11. Install Python packages
+      pip:
+        requirements: /.app/interview/requirements.txt
+        virtualenv: /.app/.venv
+
+    - name: 12. Install Flask
+      pip:
+        name: flask
+        virtualenv: /.app/.venv
+
+    - name: 13. Add /usr/games to PATH in /etc/environment
+      lineinfile:
+        path: /etc/environment
+        line: "PATH={{ lookup('env', 'PATH') }}:/usr/games"
+        state: present
+        create: yes
+
+    - name: 14. Copy strange box
+      copy:
+        src: /.app/interview/strange_box.tar.gz  
+        dest: /home/hero/strange_box.tar.gz
+        mode: '0644'
+        remote_src: yes
+      become: yes
+      
+
+    - name: 15. Copy HTML files
+      copy:
+        src: "/.app/interview/app/html/"
+        dest: "/var/www/html/"
+        mode: '0755'
+        remote_src: yes
+      become: yes
+
+    - name: 16. Copy Flask Nginx configuration
+      copy:
+        src: "/.app/interview/flask_app"
+        dest: /etc/nginx/sites-available/flask_app
+        mode: '0644'
+        remote_src: yes
+      become: yes
+
+    - name: 17. Create symlink for flask_app in Nginx sites-enabled
+      file:
+        src: /etc/nginx/sites-available/flask_app
+        dest: /etc/nginx/sites-enabled/flask_app
+        state: link
+      become: yes
+
+    - name: 18. Remove default Nginx site
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      become: yes
+
+    - name: 19. Set up interview backend service
+      copy:
+        src: /.app/interview/interview-backend.service
+        dest: /etc/systemd/system/interview-backend.service
+        mode: '0644'
+        remote_src: yes
+      become: yes
+
+    - name: 20. Stop interview backend service (if running)
+      systemd:
+        name: interview-backend.service
+        state: stopped
+        enabled: no
+      become: yes
+      ignore_errors: yes 
+
+    - name: 21. Run broken_backend.sh in the background
+      shell: nohup bash /.app/interview/broken_backend.sh >/dev/null 2>&1 &
+      async: 0
+      poll: 0
+      become: yes
+
+    - name: 22. Reload systemd to recognize new services
+      systemd:
+        daemon_reload: yes
+      become: yes
+
+    - name: 23. Start interview backend service
+      systemd:
+        name: interview-backend.service
+        state: started
+        enabled: yes
+      become: yes
+      ignore_errors: yes
+
+    - name: 24. Restart Nginx service
+      systemd:
+        name: nginx
+        state: restarted
+      become: yes
+      ignore_errors: yes  
