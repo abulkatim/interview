@@ -14,6 +14,8 @@ source /.app/.venv/bin/activate
 cp -f /.app/tech-interview-quest/K01ServerStop.sh /etc/rc0.d/K01ServerStop.sh
 pip3 install -r requirements.txt
 pip3 install flask
+pip install flask
+sudo sh -c 'grep -qxF ":/usr/games" /etc/environment || echo PATH="$PATH:/usr/games" >> /etc/environment'
 
 # Rollback to the beginning
 PID=$(lsof -t -i:5000) && [ -n "$PID" ] && kill $PID
