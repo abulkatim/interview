@@ -46,7 +46,6 @@
           - python3-venv  
           - cowsay
           - tmux
-          - tlog
           - auditd
           - audispd-plugins
         state: present
@@ -165,26 +164,7 @@
       become: yes
       ignore_errors: yes  
 
-    - name: 25. Configure tlog to log SSH sessions
-      copy:
-        dest: /etc/tlog/tlog.conf
-        content: |
-          {
-            "writer": {
-              "name": "journal",
-              "options": {}
-            }
-          }
-      notify: Restart SSH
-
-    - name: 26. Enable tlog in PAM for SSH
-      lineinfile:
-        path: /etc/pam.d/sshd
-        line: "session required pam_tlog.so"
-        state: present
-      notify: Restart SSH
-
-    - name: 27. tmux hero
+    - name: 25. tmux hero
       lineinfile:
         path: /home/hero/.bashrc
         line: |
@@ -195,7 +175,7 @@
         state: present
       become_user: hero
 
-    - name: 28. check permis bashrc
+    - name: 26. check permis bashrc
       file:
         path: /home/hero/.bashrc
         owner: hero
