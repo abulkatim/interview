@@ -164,7 +164,7 @@
       become: yes
       ignore_errors: yes  
 
-    - name: 25. tmux hero
+    - name: 25. tmux hero  
       lineinfile:
         path: /home/hero/.bashrc
         line: |
