@@ -49,6 +49,7 @@
           - auditd
           - audispd-plugins
           - vim
+          - net-tools
         state: present
         update_cache: yes
 
@@ -131,18 +132,16 @@
         remote_src: yes
       become: yes
 
-    - name: 20. Stop interview backend service (if running)
+    - name: 21. Start and enable interview backend service
       systemd:
         name: interview-backend.service
-        state: stopped
+        state: started
         enabled: no
       become: yes
-      ignore_errors: yes 
+      ignore_errors: yes
 
     - name: 21. Run broken_backend.sh in the background
-      shell: nohup bash /.app/interview/broken_backend.sh >/dev/null 2>&1 &
-      async: 0
-      poll: 0
+      shell: "nohup python3 ./app/broken_backend.py > /tmp/broken_backend.log 2>&1 &"
       become: yes
 
     - name: 22. Reload systemd to recognize new services

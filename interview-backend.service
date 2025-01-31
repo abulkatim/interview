@@ -5,9 +5,9 @@ Description=Interview Quest Web App Service
 User=root
 StandardOutput=file:/var/log/interview-backend.log
 StandardError=syslog+console
-WorkingDirectory=/.app/tech-interview-quest/app/
+WorkingDirectory=/.app/interview/app/
 Restart=no
-ExecStart=/usr/bin/python3 /.app/tech-interview-quest/app/interview_backend.py
+ExecStart=/usr/bin/python3 /.app/interview/app/interview_backend.py
 
 [Install]
 WantedBy=multi-user.target
