@@ -48,6 +48,7 @@
           - tmux
           - auditd
           - audispd-plugins
+          - vim
         state: present
         update_cache: yes
 
@@ -173,9 +174,9 @@
           fi
         create: yes
         state: present
-      become_user: hero
+      become: yes
 
-    - name: 26. check permis bashrc
+    - name: 26. check perms bashrc
       file:
         path: /home/hero/.bashrc
         owner: hero
