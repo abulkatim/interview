@@ -45,6 +45,10 @@
           - python3-pip
           - python3-venv  
           - cowsay
+          - tmux
+          - tlog
+          - auditd
+          - audispd-plugins
         state: present
         update_cache: yes
 
@@ -160,3 +164,46 @@
         state: restarted
       become: yes
       ignore_errors: yes  
+
+    - name: 25. Configure tlog to log SSH sessions
+      copy:
+        dest: /etc/tlog/tlog.conf
+        content: |
+          {
+            "writer": {
+              "name": "journal",
+              "options": {}
+            }
+          }
+      notify: Restart SSH
+
+    - name: 26. Enable tlog in PAM for SSH
+      lineinfile:
+        path: /etc/pam.d/sshd
+        line: "session required pam_tlog.so"
+        state: present
+      notify: Restart SSH
+
+    - name: 27. tmux hero
+      lineinfile:
+        path: /home/hero/.bashrc
+        line: |
+          if [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
+              tmux new-session -A -s interview
+          fi
+        create: yes
+        state: present
+      become_user: hero
+
+    - name: 28. check permis bashrc
+      file:
+        path: /home/hero/.bashrc
+        owner: hero
+        group: hero
+        mode: '0644'
+
+  handlers:
+    - name: Restart SSH
+      service:
+        name: sshd
+        state: restarted
