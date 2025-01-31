@@ -59,9 +59,9 @@
         state: directory
         mode: '0755'
 
-    - name: 9. Clone tech interview quest repository
+    - name: 9. Clone interview quest repository
       git:
-        repo: https://github.com/abulkatim/tech-interview-quest.git
+        repo: https://github.com/abulkatim/interview.git
         dest: /.app/interview
         clone: yes
         update: yes
