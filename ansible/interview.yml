@@ -3,44 +3,38 @@
   hosts: all
   become: yes  
   tasks:
-
-    - name: 1. Git installation
-      apt:
-        name: git
-        state: present
-        update_cache: yes
-
-    - name: 2. Create hero user
+    - name: 1. Create hero user
       user:
         name: hero
         shell: /bin/bash
         create_home: yes
 
-    - name: 3. Create superhero user
+    - name: 2. Create superhero user
       user:
         name: superhero
         shell: /bin/bash
         create_home: yes
 
-    - name: 4. Set password for hero
+    - name: 3. Set password for hero
       user:
         name: hero
         password: "{{ 'supersafepassword' | password_hash('sha512') }}"
 
-    - name: 5. Set password for superhero
+    - name: 4. Set password for superhero
       user:
         name: superhero
         password: "{{ 'superheropassword' | password_hash('sha512') }}"
 
-    - name: 6. Add superhero to sudo group
+    - name: 5. Add superhero to sudo group
       user:
         name: superhero
         groups: sudo
         append: yes
 
-    - name: 7. Install required packages
+    - name: 6. Install required packages
       apt:
         name:
+          - git
           - nginx
           - python3-pip
           - python3-venv  
@@ -52,6 +46,11 @@
           - net-tools
         state: present
         update_cache: yes
+
+    - name: 7. Install Flask globally using pip3
+      pip:
+        name: flask
+        executable: pip3
 
     - name: 8. Ensure /.app directory exists
       file:
@@ -72,11 +71,6 @@
     - name: 11. Install Python packages
       pip:
         requirements: /.app/interview/requirements.txt
-        virtualenv: /.app/.venv
-
-    - name: 12. Install Flask
-      pip:
-        name: flask
         virtualenv: /.app/.venv
 
     - name: 13. Add /usr/games to PATH in /etc/environment
@@ -111,7 +105,7 @@
         remote_src: yes
       become: yes
 
-    - name: 17. Create symlink for flask_app in Nginx sites-enabled
+    - name: 17. Create symlink for flask_app in nginx sites-enabled
       file:
         src: /etc/nginx/sites-available/flask_app
         dest: /etc/nginx/sites-enabled/flask_app
@@ -132,17 +126,17 @@
         remote_src: yes
       become: yes
 
-    - name: 21. Start and enable interview backend service
+    - name: 20. Run broken_backend.sh in the background
+      shell: "nohup python3 ./app/broken_backend.py > /tmp/broken_backend.log 2>&1 &"
+      become: yes
+
+    - name: 21. Start interview_backend service
       systemd:
         name: interview-backend.service
         state: started
         enabled: no
       become: yes
       ignore_errors: yes
-
-    - name: 21. Run broken_backend.sh in the background
-      shell: "nohup python3 ./app/broken_backend.py > /tmp/broken_backend.log 2>&1 &"
-      become: yes
 
     - name: 22. Reload systemd to recognize new services
       systemd:
