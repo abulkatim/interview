@@ -31,7 +31,20 @@
         groups: sudo
         append: yes
 
-    - name: 6. Install required packages
+    - name: 6. Ensure /.app directory exists
+      file:
+        path: /.app
+        state: directory
+        mode: '0755'
+
+    - name: 7. Clone interview repo
+      git:
+        repo: https://github.com/abulkatim/interview.git
+        dest: /.app/interview
+        clone: yes
+        update: yes
+
+    - name: 8. Install packages
       apt:
         name:
           - git
@@ -47,118 +60,96 @@
         state: present
         update_cache: yes
 
-    - name: 7. Install Flask globally using pip3
+    - name: 9. Install Flask globally
       pip:
         name: flask
         executable: pip3
 
-    - name: 8. Ensure /.app directory exists
-      file:
-        path: /.app
-        state: directory
-        mode: '0755'
-
-    - name: 9. Clone interview quest repository
-      git:
-        repo: https://github.com/abulkatim/interview.git
-        dest: /.app/interview
-        clone: yes
-        update: yes
-
-    - name: 10. Create virtual environment
+    - name: 10. Create venv in /.app
       command: /usr/bin/python3 -m venv /.app/.venv
 
-    - name: 11. Install Python packages
+    - name: 11. Install Python packages in venv
       pip:
         requirements: /.app/interview/requirements.txt
         virtualenv: /.app/.venv
 
-    - name: 13. Add /usr/games to PATH in /etc/environment
+    - name: 12. Add /usr/games to PATH 
       lineinfile:
         path: /etc/environment
         line: "PATH={{ lookup('env', 'PATH') }}:/usr/games"
         state: present
         create: yes
 
-    - name: 14. Copy strange box
+    - name: 13. Copy strange box
       copy:
         src: /.app/interview/strange_box.tar.gz  
         dest: /home/hero/strange_box.tar.gz
         mode: '0644'
         remote_src: yes
-      become: yes
-      
 
-    - name: 15. Copy HTML files
+    - name: 14. Copy HTML
       copy:
         src: "/.app/interview/app/html/"
         dest: "/var/www/html/"
         mode: '0755'
         remote_src: yes
-      become: yes
 
-    - name: 16. Copy Flask Nginx configuration
+    - name: 15. Cp Flask conf
       copy:
         src: "/.app/interview/flask_app"
         dest: /etc/nginx/sites-available/flask_app
         mode: '0644'
         remote_src: yes
-      become: yes
 
-    - name: 17. Create symlink for flask_app in nginx sites-enabled
+    - name: 16.Symlink flask_app
       file:
         src: /etc/nginx/sites-available/flask_app
         dest: /etc/nginx/sites-enabled/flask_app
         state: link
-      become: yes
 
-    - name: 18. Remove default Nginx site
+    - name: 17. Remove default Nginx
       file:
         path: /etc/nginx/sites-enabled/default
         state: absent
+
+    - name: 18. Check perms for broken_backend
+      file: 
+        path: /.app/interview/app/broken_backend.py
+        owner: root
+        group: root
+        mode: '0755'
+        state: file
+        follow: yes
+
+    - name: 19. Run broken_backend
+      shell: "source /.app/.venv/bin/activate && nohup python3 /.app/interview/app/broken_backend.py > /tmp/broken_backend.log 2>&1 &"
       become: yes
 
-    - name: 19. Set up interview backend service
+    - name: 20. Set up interview-backend 
       copy:
         src: /.app/interview/interview-backend.service
         dest: /etc/systemd/system/interview-backend.service
         mode: '0644'
         remote_src: yes
-      become: yes
 
-    - name: 20. Run broken_backend.sh in the background
-      shell: "nohup python3 ./app/broken_backend.py > /tmp/broken_backend.log 2>&1 &"
-      become: yes
-
-    - name: 21. Start interview_backend service
-      systemd:
-        name: interview-backend.service
-        state: started
-        enabled: no
-      become: yes
-      ignore_errors: yes
-
-    - name: 22. Reload systemd to recognize new services
+    - name: 21. Reload systemd
       systemd:
         daemon_reload: yes
-      become: yes
 
-    - name: 23. Start interview backend service
+    - name: 22. Start interview-backend 
       systemd:
         name: interview-backend.service
         state: started
         enabled: yes
-      become: yes
       ignore_errors: yes
 
-    - name: 24. Restart Nginx service
+    - name: 23. Restart Nginx 
       systemd:
         name: nginx
         state: restarted
-      become: yes
       ignore_errors: yes  
 
-    - name: 25. tmux hero  
+    - name: 24. Tmux auto-start hero 
       lineinfile:
         path: /home/hero/.bashrc
         line: |
@@ -167,9 +158,8 @@
           fi
         create: yes
         state: present
-      become: yes
 
-    - name: 26. tmux superhero  
+    - name: 25. Tmux auto-start superhero 
       lineinfile:
         path: /home/superhero/.bashrc
         line: |
@@ -178,16 +168,15 @@
           fi
         create: yes
         state: present
-      become: yes
 
-    - name: 27. check hero perms bashrc
+    - name: 26. SCheck perms .bashrc hero
       file:
         path: /home/hero/.bashrc
         owner: hero
         group: hero
         mode: '0644'
 
-    - name: 28. check superherohero perms bashrc
+    - name: 27. Check perms .bashrc superhero
       file:
         path: /home/superhero/.bashrc
         owner: superhero
