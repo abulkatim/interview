@@ -169,11 +169,29 @@
         state: present
       become: yes
 
-    - name: 26. check perms bashrc
+    - name: 26. tmux superhero  
+      lineinfile:
+        path: /home/superhero/.bashrc
+        line: |
+          if [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
+              tmux new-session -A -s interview
+          fi
+        create: yes
+        state: present
+      become: yes
+
+    - name: 27. check hero perms bashrc
       file:
         path: /home/hero/.bashrc
         owner: hero
         group: hero
+        mode: '0644'
+
+    - name: 28. check superherohero perms bashrc
+      file:
+        path: /home/superhero/.bashrc
+        owner: superhero
+        group: superhero
         mode: '0644'
 
   handlers:
