@@ -120,8 +120,8 @@
         state: file
         follow: yes
 
-    - name: 19. Run broken_backend
-      shell: "source /.app/.venv/bin/activate && nohup python3 /.app/interview/app/broken_backend.py > /tmp/broken_backend.log 2>&1 &"
+    - name: 19. Run broken_backend.py in the background inside virtualenv
+      shell: "/.app/.venv/bin/python3 /.app/interview/app/broken_backend.py > /tmp/broken_backend.log 2>&1 &"
       become: yes
 
     - name: 20. Set up interview-backend 
