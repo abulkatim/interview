@@ -36,15 +36,7 @@
         path: /.app
         state: directory
         mode: '0755'
-
-    - name: 7. Clone interview repo
-      git:
-        repo: https://github.com/abulkatim/interview.git
-        dest: /.app/interview
-        clone: yes
-        update: yes
-
-    - name: 8. Install packages
+    - name: 7. Install packages
       apt:
         name:
           - git
@@ -59,6 +51,13 @@
           - net-tools
         state: present
         update_cache: yes
+
+    - name: 8. Clone interview repo
+      git:
+        repo: https://github.com/abulkatim/interview.git
+        dest: /.app/interview
+        clone: yes
+        update: yes
 
     - name: 9. Install Flask globally
       pip:
