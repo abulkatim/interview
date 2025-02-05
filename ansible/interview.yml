@@ -64,6 +64,8 @@
       pip:
         name: flask
         executable: pip3
+        extra_args: "--break-system-packages"
+
 
     - name: 10. Create venv in /.app
       command: /usr/bin/python3 -m venv /.app/.venv
