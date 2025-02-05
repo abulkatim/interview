@@ -36,6 +36,7 @@
         path: /.app
         state: directory
         mode: '0755'
+
     - name: 7. Install packages
       apt:
         name:
@@ -56,11 +57,8 @@
       git:
         repo: https://github.com/abulkatim/interview.git
         dest: /.app/interview
-        git:
-          repo: https://github.com/abulkatim/interview.git
-          dest: /.app/interview
-          clone: yes
-          update: yes
+        clone: yes
+        update: yes
 
     - name: 9. Install Flask globally
       pip:
@@ -96,25 +94,25 @@
         mode: '0755'
         remote_src: yes
 
-    - name: 15. Cp Flask conf
+    - name: 15. Copy Flask configuration
       copy:
         src: "/.app/interview/flask_app"
         dest: /etc/nginx/sites-available/flask_app
         mode: '0644'
         remote_src: yes
 
-    - name: 16.Symlink flask_app
+    - name: 16. Create symlink for flask_app
       file:
         src: /etc/nginx/sites-available/flask_app
         dest: /etc/nginx/sites-enabled/flask_app
         state: link
 
-    - name: 17. Remove default Nginx
+    - name: 17. Remove default Nginx site
       file:
         path: /etc/nginx/sites-enabled/default
         state: absent
 
-    - name: 18. Check perms for broken_backend
+    - name: 18. Check permissions for broken_backend.py
       file: 
         path: /.app/interview/app/broken_backend.py
         owner: root
@@ -128,9 +126,8 @@
       args:
         executable: /bin/bash
       become: yes
-        
 
-    - name: 20. Set up interview-backend 
+    - name: 20. Set up interview-backend service
       copy:
         src: /.app/interview/interview-backend.service
         dest: /etc/systemd/system/interview-backend.service
@@ -141,20 +138,20 @@
       systemd:
         daemon_reload: yes
 
-    - name: 22. Start interview-backend 
+    - name: 22. Start interview-backend service
       systemd:
         name: interview-backend.service
         state: started
         enabled: yes
       ignore_errors: yes
 
-    - name: 23. Restart Nginx 
+    - name: 23. Restart Nginx service
       systemd:
         name: nginx
         state: restarted
       ignore_errors: yes  
 
-    - name: 24. Tmux auto-start hero 
+    - name: 24. Configure tmux auto-start for hero
       lineinfile:
         path: /home/hero/.bashrc
         line: |
@@ -164,7 +161,7 @@
         create: yes
         state: present
 
-    - name: 25. Tmux auto-start superhero 
+    - name: 25. Configure tmux auto-start for superhero
       lineinfile:
         path: /home/superhero/.bashrc
         line: |
@@ -174,14 +171,14 @@
         create: yes
         state: present
 
-    - name: 26. SCheck perms .bashrc hero
+    - name: 26. Check permissions for hero .bashrc
       file:
         path: /home/hero/.bashrc
         owner: hero
         group: hero
         mode: '0644'
 
-    - name: 27. Check perms .bashrc superhero
+    - name: 27. Check permissions for superhero .bashrc
       file:
         path: /home/superhero/.bashrc
         owner: superhero
