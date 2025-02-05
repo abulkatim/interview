@@ -124,7 +124,6 @@
       shell: "nohup /.app/.venv/bin/python3 /.app/interview/app/broken_backend.py 2>&1 & disown"
       args:
         executable: /bin/bash
-        force: yes
       become: yes
         
 
