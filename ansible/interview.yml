@@ -56,8 +56,11 @@
       git:
         repo: https://github.com/abulkatim/interview.git
         dest: /.app/interview
-        clone: yes
-        update: yes
+        git:
+          repo: https://github.com/abulkatim/interview.git
+          dest: /.app/interview
+          clone: yes
+          update: yes
 
     - name: 9. Install Flask globally
       pip:
