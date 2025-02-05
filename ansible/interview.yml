@@ -122,7 +122,11 @@
 
     - name: 19. Run broken_backend.py in the background inside virtualenv
       shell: "nohup /.app/.venv/bin/python3 /.app/interview/app/broken_backend.py 2>&1 & disown"
+      args:
+        executable: /bin/bash
+        force: yes
       become: yes
+        
 
     - name: 20. Set up interview-backend 
       copy:
